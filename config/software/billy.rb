@@ -1,5 +1,5 @@
 #
-# Author:: Noah Kantrowitz <noah@coderanger.net>
+# Author:: Victor Lin <victorlin@balancedpayments.com>
 #
 # Copyright 2014, Balanced, Inc.
 #
@@ -16,31 +16,28 @@
 # limitations under the License.
 #
 
-name 'brache'
+name 'billy'
 
+dependency 'setuptools'
 dependency 'pip'
 
-# for lxml
-dependency 'libxml2'
-dependency 'libxslt'
+source git: 'git@github.com:balanced/billy.git'
+version ENV['BILLY_VERSION'] || 'invoicing'
 
-source git: 'git@github.com:balanced/brache.git'
-version ENV['BRACHE_VERSION'] || 'use-sterling'
-
-relative_path 'brache'
+relative_path 'billy'
 
 always_build true
 
 build do
   block do
     project = self.project
-    if project.name == 'brache'
+    if project.name == 'billy'
       shell = Mixlib::ShellOut.new('git describe --tags', cwd: self.project_dir)
       shell.run_command
       if shell.exitstatus == 0
         build_version = shell.stdout.chomp
         project.build_version build_version
-        project.build_iteration ENV['BRACHE_PACKAGE_ITERATION'] ? ENV['BRACHE_PACKAGE_ITERATION'].to_i : 1
+        project.build_iteration ENV['BILLY_PACKAGE_ITERATION'] ? ENV['BILLY_PACKAGE_ITERATION'].to_i : 1
       end
     end
   end
